@@ -3,14 +3,18 @@ const router = express.Router();
 import {
   registerInstitute,
   loginInstitute,
+  profileInstitute,
   logoutInstitute,
   generateNanoIDInstitute,
   refreshtokenInstitute,
+  addCourses,
 } from "../controllers/instituteAuthController.js";
 
 router.post("/register", registerInstitute);
 router.post("/login", loginInstitute);
-router.post("/logout", loginInstitute);
+router.get("/profile", profileInstitute);
+router.post("/logout", logoutInstitute);
+router.post("/add-courses", addCourses);
 router.post("/generate-nanoID", generateNanoIDInstitute);
 router.get("/refresh-token", refreshtokenInstitute);
 
