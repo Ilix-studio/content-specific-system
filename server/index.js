@@ -5,6 +5,7 @@ import connectDB from "./utils/dbConnection.js";
 import generalQRoutes from "./routes/generalQRoutes.js";
 import mockQRoutes from "./routes/mockQRoutes.js";
 import instituteAuthRoutes from "./routes/instituteAuthRoutes.js";
+import studentAuthRoutes from "./routes/studentAuthRoutes.js";
 import { routeNotFound, errorHandler } from "./middleware/errorMiddleware.js";
 import corsOptions from "./config/corsOptions.js";
 const port = 8080;
@@ -23,6 +24,7 @@ app.get("/", (req, res) => res.send("server is ready"));
 app.use("/api/institute/account", instituteAuthRoutes);
 app.use("/api/institute/GQ", generalQRoutes);
 app.use("/api/institute/MQ", mockQRoutes);
+app.use("/api/student", studentAuthRoutes);
 
 app.use(routeNotFound);
 app.use(errorHandler);
