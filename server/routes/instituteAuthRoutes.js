@@ -5,10 +5,10 @@ import {
   loginInstitute,
   profileInstitute,
   logoutInstitute,
-  generateNanoIDInstitute,
   refreshtokenInstitute,
   addCourses,
 } from "../controllers/instituteAuthController.js";
+import { generateNanoIDInstitute } from "../controllers/generatedNanoIDContoller.js";
 
 router.post("/register", registerInstitute);
 router.post("/login", loginInstitute);

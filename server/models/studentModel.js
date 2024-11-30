@@ -1,10 +1,7 @@
 import mongoose from "mongoose";
 
 const studentSchema = mongoose.Schema({
-  name: {
-    type: String,
-  },
-  passkey: {
+  nanoID: {
     type: String,
   },
 });
