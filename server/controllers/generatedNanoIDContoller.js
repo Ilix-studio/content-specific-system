@@ -23,6 +23,18 @@ const generateNanoIDInstitute = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("Course not found");
   }
+  console.log(courseName.timePeriods);
+  // Find the price for the selected time period in the course
+  const selectedPeriod = courseName.timePeriods.find((period) => {
+    console.log(
+      `Checking period: ${period.duration} against timePeriod: ${timePeriod}`
+    );
+    return period.duration === timePeriod;
+  });
+  if (!selectedPeriod) {
+    res.status(404);
+    throw new Error(`No course found for time period ${timePeriod}`);
+  }
 
   // Handle Payment for the selected time period
   const paymentAmount = calculatePaymentAmount(timePeriod, batchSize); // Use the price calculation function
@@ -33,15 +45,6 @@ const generateNanoIDInstitute = asyncHandler(async (req, res) => {
     status: "pending",
   });
   await payment.save();
-
-  // Find the price for the selected time period in the course
-  const selectedPeriod = courseName.timePeriods.find(
-    (period) => period.duration === timePeriod
-  );
-  if (!selectedPeriod) {
-    res.status(404);
-    throw new Error("Select specific time period");
-  }
 
   // Generate batch of NanoId and save them
   const nanoIDs = [];

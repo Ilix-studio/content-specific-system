@@ -33,7 +33,6 @@ const registerInstitute = asyncHandler(async (req, res) => {
       username: newInstitute.username,
       phoneNumber: newInstitute.phoneNumber,
       email: newInstitute.email,
-      phoneNumber: newInstitute.phoneNumber,
       password: newInstitute.password,
     });
   } else {
