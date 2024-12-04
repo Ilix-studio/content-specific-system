@@ -1,17 +1,27 @@
 import mongoose from "mongoose";
 
 const paymentSchema = mongoose.Schema({
-  institute: {
+  // institute: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: "InstituteAuth",
+  //   required: true,
+  // },
+  courseId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "InstituteAuth",
-    required: true,
-  },
-  amount: {
-    type: Number,
+    ref: "CourseInfo",
     required: true,
   },
   timePeriod: {
     type: Number,
+    required: true,
+  },
+  nanoIdCount: {
+    type: Number,
+    required: true,
+  },
+  totalAmount: {
+    type: Number,
+    required: true,
   },
   status: {
     type: String,

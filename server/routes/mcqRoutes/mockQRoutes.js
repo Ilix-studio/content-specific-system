@@ -5,7 +5,7 @@ import {
   getMockQuestion,
   updateMockQuestion,
   deleteMockQuestion,
-} from "../controllers/mockQuestionController.js";
+} from "../../controllers/mcqControllers/mockQuestionController.js";
 
 const router = express.Router();
 

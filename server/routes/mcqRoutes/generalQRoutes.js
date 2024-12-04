@@ -7,7 +7,7 @@ import {
   getGeneralQuestions,
   updateGeneralQuestions,
   deleteGeneralQuestions,
-} from "../controllers/generalQuestionController.js";
+} from "../../controllers/mcqControllers/generalQuestionController.js";
 
 //General Question ROutes
 router.get("/get-generalQ", getGeneralQuestions);

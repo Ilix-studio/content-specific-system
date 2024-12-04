@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import MockQuestionSet from "../models/mockQModel.js";
+import MockQuestionSet from "../../models/mcqModels/mockQModel.js";
 
 //Mock Question COntrollers
 

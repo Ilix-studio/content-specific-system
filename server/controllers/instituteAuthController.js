@@ -33,7 +33,6 @@ const registerInstitute = asyncHandler(async (req, res) => {
       username: newInstitute.username,
       phoneNumber: newInstitute.phoneNumber,
       email: newInstitute.email,
-      phoneNumber: newInstitute.phoneNumber,
       password: newInstitute.password,
     });
   } else {
@@ -48,13 +47,15 @@ const loginInstitute = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const instituteEmail = await InstituteAuth.findOne({ email });
 
-  const match = await bcrypt.compare(password);
-
-  if (instituteEmail && password) {
+  if (
+    instituteEmail &&
+    (await bcrypt.compare(password, instituteEmail.password))
+  ) {
     res.json({
       _id: instituteEmail.id,
       instituteName: instituteEmail.instituteName,
       email: instituteEmail.email,
+      message: `You are successfully login`,
     });
   } else {
     res.status(400);
@@ -64,8 +65,7 @@ const loginInstitute = asyncHandler(async (req, res) => {
 
 //Get  institute profile
 const profileInstitute = asyncHandler(async (req, res) => {
-  res.status(200).json(req.newInstitute);
-  console.log("Instittute Profile");
+  res.status(200).json({ message: `Institute Profile` });
 });
 
 //logout institute
