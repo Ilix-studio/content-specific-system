@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import GeneralQuestionSet from "../models/generalQModel.js";
+import GeneralQuestionSet from "../../models/mcqModels/generalQModel.js";
 
 //General Question COntrollers
 const createGeneralQuestions = asyncHandler(async (req, res) => {

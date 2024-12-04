@@ -1,80 +1,33 @@
 import asyncHandler from "express-async-handler";
-import { nanoid } from "nanoid";
-import InstituteAuth from "../models/instituteAuthModel.js";
-import CourseInfo from "../models/courseModel.js";
-import NanoIDInfo from "../models/nanoIdModel.js";
 import PaymentInfo from "../models/paymentModel.js";
-import calculatePaymentAmount from "../utils/priceCalc.js";
+import { nanoid } from "nanoid";
+import NanoIDInfo from "../models/nanoIdModel.js";
 
 // Genrate token for institute by batch(students) by course
-const generateNanoIDInstitute = asyncHandler(async (req, res) => {
-  const { instituteId, courseId, batchSize, timePeriod } = req.body;
-
-  // Find the institute
-  const institute = await InstituteAuth.findById(instituteId);
-  if (!institute) {
+const generateNanoID = asyncHandler(async (req, res) => {
+  const { paymentId } = req.body;
+  // Find payment by ID
+  const payment = await PaymentInfo.findById(paymentId);
+  if (!payment) {
     res.status(404);
-    throw new Error("Institute not found");
+    throw new Error("Payment not found");
   }
-
-  // Find the course
-  const courseName = await CourseInfo.findById(courseId);
-  if (!courseName) {
-    res.status(404);
-    throw new Error("Course not found");
-  }
-  console.log(courseName.timePeriods);
-  // Find the price for the selected time period in the course
-  const selectedPeriod = courseName.timePeriods.find((period) => {
-    console.log(
-      `Checking period: ${period.duration} against timePeriod: ${timePeriod}`
-    );
-    return period.duration === timePeriod;
-  });
-  if (!selectedPeriod) {
-    res.status(404);
-    throw new Error(`No course found for time period ${timePeriod}`);
-  }
-
-  // Handle Payment for the selected time period
-  const paymentAmount = calculatePaymentAmount(timePeriod, batchSize); // Use the price calculation function
-  const payment = new PaymentInfo({
-    institute: institute._id,
-    amount: paymentAmount,
-    timePeriod: timePeriod,
-    status: "pending",
-  });
-  await payment.save();
-
-  // Generate batch of NanoId and save them
-  const nanoIDs = [];
-  for (let i = 0; i < batchSize; i++) {
-    const newNanoID = nanoid(13);
-    // Calculate expiration date based on the selected time period
-    const expirationDate = new Date();
-    expirationDate.setMonth(
-      expirationDate.getMonth() + selectedPeriod.duration
-    );
-    const nanoIDDoc = new NanoIDInfo({
-      nanoID: newNanoID,
-      courseName: courseName._id,
-      expirationDate: expirationDate,
+  if (payment.status === "completed") {
+    const nanoIds = [];
+    for (let i = 0; i < payment.nanoIdCount; i++) {
+      nanoIds.push(nanoid(13)); // Generate a new Nano ID
+    }
+    const saveTheNanoIds = new NanoIDInfo({
+      nanoID: nanoIds,
       isActive: true,
     });
-    await nanoIDDoc.save();
-    nanoIDs.push(newNanoID);
+    await saveTheNanoIds.save();
+    res.status(201).json({
+      nanoIds: nanoIds,
+    });
+  } else {
+    res.status(400).json({ msg: "Payment not completed" });
   }
-
-  // Mark payment as completed
-  payment.status = "completed";
-  await payment.save();
-
-  // Respond with the generated Nano IDs and payment information
-  res.status(200).json({
-    message: `${batchSize} Nano IDs generated successfully`,
-    nanoIDs: nanoIDs,
-    paymentAmount: paymentAmount, // Return the calculated payment amount
-  });
 });
 
-export { generateNanoIDInstitute };
+export { generateNanoID };

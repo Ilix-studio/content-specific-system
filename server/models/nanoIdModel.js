@@ -1,20 +1,13 @@
 import mongoose from "mongoose";
 
 const nanoIDSchema = mongoose.Schema({
-  nanoID: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  courseName: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "CourseInfo",
-    required: true,
-  },
-  expirationDate: {
-    type: Date,
-    required: true,
-  },
+  nanoID: [
+    {
+      type: String,
+      required: true,
+      unique: true,
+    },
+  ],
   isActive: {
     type: Boolean,
     default: true,
