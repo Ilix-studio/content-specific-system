@@ -1,7 +1,6 @@
 import asyncHandler from "express-async-handler";
 import InstituteAuth from "../models/instituteAuthModel.js";
-import CourseInfo from "../models/courseModel.js";
-import bcrypt from "bcryptjs/dist/bcrypt.js";
+import bcrypt from "bcryptjs";
 
 //register institute
 const registerInstitute = asyncHandler(async (req, res) => {
@@ -73,26 +72,6 @@ const logoutInstitute = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "logout institute" });
 });
 
-//add courses into institute
-const addCourses = asyncHandler(async (req, res) => {
-  const { courseName, instituteId, timePeriods } = req.body;
-  const institute = await InstituteAuth.findById(instituteId);
-  if (!institute) {
-    res.status(404);
-    throw new Error("Institute not found");
-  }
-  const newCourse = new CourseInfo({
-    courseName,
-    institute: instituteId,
-    timePeriods,
-  });
-  const savedCourse = await newCourse.save();
-  res.status(201).json({
-    message: "Course added Successfully",
-    courseName: savedCourse,
-  });
-});
-
 const refreshtokenInstitute = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "get refresh token" });
 });
@@ -102,6 +81,5 @@ export {
   loginInstitute,
   profileInstitute,
   logoutInstitute,
-  addCourses,
   refreshtokenInstitute,
 };
