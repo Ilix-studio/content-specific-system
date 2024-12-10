@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
-import PaymentInfo from "../models/paymentModel.js";
+import PaymentInfo from "../../models/paymentModel.js";
 import { nanoid } from "nanoid";
-import NanoIDInfo from "../models/nanoIdModel.js";
+import NanoIDInfo from "../../models/nanoIdModel.js";
 
 // Genrate token for institute by batch(students) by course
 const generateNanoID = asyncHandler(async (req, res) => {

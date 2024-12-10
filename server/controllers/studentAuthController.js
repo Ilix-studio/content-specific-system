@@ -16,3 +16,5 @@ const loginStudent = asyncHandler(async (req, res) => {
 });
 
 export { loginStudent };
+
+// Add All logic a student will do here
