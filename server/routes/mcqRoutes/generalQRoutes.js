@@ -8,13 +8,18 @@ import {
   updateGeneralQuestions,
   deleteGeneralQuestions,
 } from "../../controllers/mcqControllers/generalQuestionController.js";
+import { protectAccess } from "../../middleware/authMiddleware.js";
 
 //General Question ROutes
-router.get("/get-generalQ", getGeneralQuestions);
-router.post("/create-generalQuestions", createGeneralQuestions);
-router.post("/add-generalQuestions/:generalQuestionSetId", addMCQforGQ);
-router.patch("/updateGQ/:id", updateGeneralQuestions);
-router.delete("/deleteGQ/:id", deleteGeneralQuestions);
+router.get("/get-generalQ", protectAccess, getGeneralQuestions);
+router.post("/create-generalQuestions", protectAccess, createGeneralQuestions);
+router.post(
+  "/add-generalQuestions/:generalQuestionSetId",
+  protectAccess,
+  addMCQforGQ
+);
+router.patch("/updateGQ/:id", protectAccess, updateGeneralQuestions);
+router.delete("/deleteGQ/:id", protectAccess, deleteGeneralQuestions);
 
 export default router;
 

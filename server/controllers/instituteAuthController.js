@@ -1,7 +1,14 @@
 import asyncHandler from "express-async-handler";
 import InstituteAuth from "../models/instituteAuthModel.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
+//Generate JWT
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "30d",
+  });
+};
 //register institute
 const registerInstitute = asyncHandler(async (req, res) => {
   const { instituteName, username, phoneNumber, email, password } = req.body;
@@ -22,7 +29,6 @@ const registerInstitute = asyncHandler(async (req, res) => {
     username,
     phoneNumber,
     email,
-    phoneNumber,
     password: hashPassword,
   });
   if (newInstitute) {
@@ -32,7 +38,7 @@ const registerInstitute = asyncHandler(async (req, res) => {
       username: newInstitute.username,
       phoneNumber: newInstitute.phoneNumber,
       email: newInstitute.email,
-      password: newInstitute.password,
+      token: generateToken(newInstitute._id),
     });
   } else {
     res.status(400);
@@ -44,27 +50,66 @@ const registerInstitute = asyncHandler(async (req, res) => {
 //login institute
 const loginInstitute = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  const instituteEmail = await InstituteAuth.findOne({ email });
 
-  if (
-    instituteEmail &&
-    (await bcrypt.compare(password, instituteEmail.password))
-  ) {
-    res.json({
-      _id: instituteEmail.id,
-      instituteName: instituteEmail.instituteName,
-      email: instituteEmail.email,
-      message: `You are successfully login`,
-    });
-  } else {
+  // Validate input
+  if (!email || !password) {
     res.status(400);
-    throw new Error("Invalid");
+    throw new Error("Please provide email and password");
   }
+  const instituteLogin = await InstituteAuth.findOne({ email });
+  if (!instituteLogin) {
+    res.status(400);
+    throw new Error("Institute not found");
+  }
+
+  const isPasswordCorrect = await bcrypt.compare(
+    password,
+    instituteLogin.password
+  );
+
+  if (!isPasswordCorrect) {
+    res.status(400);
+    throw new Error("Invalid credentials");
+  }
+
+  res.json({
+    _id: instituteLogin.id,
+    instituteName: instituteLogin.instituteName,
+    email: instituteLogin.email,
+    token: generateToken(instituteLogin._id),
+    message: "Successfully logged in",
+  });
 });
 
-//Get  institute profile
 const profileInstitute = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `Institute Profile` });
+  // Ensure institute is authenticated
+  if (!req.institute) {
+    res.status(401);
+    throw new Error("Not authenticated");
+  }
+
+  // Fetch fresh institute data
+  const institute = await InstituteAuth.findById(req.institute._id).select(
+    "-password"
+  );
+
+  if (!institute) {
+    res.status(404);
+    throw new Error("Institute profile not found");
+  }
+
+  const { _id, instituteName, email, username, phoneNumber } = institute;
+
+  res.status(200).json({
+    message: "Institute Profile Retrieved Successfully",
+    profile: {
+      id: _id,
+      instituteName,
+      email,
+      username,
+      phoneNumber,
+    },
+  });
 });
 
 //logout institute

@@ -7,6 +7,7 @@ const courseSchema = mongoose.Schema({
   },
   institute: {
     type: mongoose.Schema.Types.ObjectId,
+    required: true,
     ref: "InstituteAuth",
   },
 });
