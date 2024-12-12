@@ -4,8 +4,11 @@ import CourseInfo from "../../models/courseModel.js";
 
 //add courses into institute
 const addCourses = asyncHandler(async (req, res) => {
-  const { courseName, instituteId } = req.body;
-  //Delete institute if needed
+  const { courseName } = req.body;
+  // Get institute ID from authenticated request
+  // This assumes the protectAccess middleware has already set req.institute
+  const instituteId = req.institute._id;
+
   const institute = await InstituteAuth.findById(instituteId);
   if (!institute) {
     res.status(404);
@@ -33,7 +36,7 @@ const addCourses = asyncHandler(async (req, res) => {
 });
 
 const getCourses = asyncHandler(async (req, res) => {
-  const { instituteId } = req.params;
+  const instituteId = req.institute._id;
 
   // Verify institute exists (optional)
   const institute = await InstituteAuth.findById(instituteId);
@@ -48,6 +51,8 @@ const getCourses = asyncHandler(async (req, res) => {
   if (courses.length === 0) {
     return res.status(404).json({
       message: "No courses found for this institute",
+      count: 0,
+      courses: [],
     });
   }
 
@@ -63,20 +68,31 @@ const updateCourse = asyncHandler(async (req, res) => {
   const { courseId } = req.params;
   const { courseName, additionalDetails } = req.body;
 
+  // Get the authenticated institute's ID from the token
+  const authenticatedInstituteId = req.institute._id;
+
   // Find the course
-  const course = await CourseInfo.findById(courseId);
+  const course = await CourseInfo.findById(courseId).populate("institute");
 
   // Check if course exists
   if (!course) {
     res.status(404);
     throw new Error("Course not found");
   }
+  // Verify that the authenticated institute owns the course
+  if (course.institute._id.toString() !== authenticatedInstituteId.toString()) {
+    res.status(403);
+    throw new Error("Not authorized to update this course");
+  }
 
   // Check for duplicate course name if name is being changed
-  if (courseName && courseName !== course.courseName) {
+  if (
+    courseName &&
+    courseName.toLowerCase() !== course.courseName.toLowerCase()
+  ) {
     const existingCourse = await CourseInfo.findOne({
       courseName: { $regex: new RegExp(`^${courseName}$`, "i") },
-      institute: course.institute,
+      institute: course.institute._id,
     });
 
     if (existingCourse) {
@@ -89,7 +105,6 @@ const updateCourse = asyncHandler(async (req, res) => {
 
   // Update course fields
   if (courseName) course.courseName = courseName;
-  if (timePeriods) course.timePeriods = timePeriods;
 
   // Optional: Add more fields to update
   if (additionalDetails) {
@@ -111,8 +126,11 @@ const updateCourse = asyncHandler(async (req, res) => {
 const deleteCourse = asyncHandler(async (req, res) => {
   const { courseId } = req.params;
 
+  // Get the authenticated institute's ID from the token
+  const authenticatedInstituteId = req.institute._id;
+
   // Find the course
-  const course = await CourseInfo.findById(courseId);
+  const course = await CourseInfo.findById(courseId).populate("institute");
 
   // Check if course exists
   if (!course) {
@@ -121,6 +139,12 @@ const deleteCourse = asyncHandler(async (req, res) => {
   }
 
   // Add a security code to add the course + ui
+
+  // Verify that the authenticated institute owns the course
+  if (course.institute._id.toString() !== authenticatedInstituteId.toString()) {
+    res.status(403);
+    throw new Error("Not authorized to delete this course");
+  }
 
   // Delete the course
   await CourseInfo.findByIdAndDelete(courseId);
