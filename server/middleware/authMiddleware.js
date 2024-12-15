@@ -22,9 +22,9 @@ const protectAccess = asyncHandler(async (req, res, next) => {
       console.log("Decoded Token:", decoded);
 
       // Find institute and exclude password
-      const institute = await InstituteAuth.findById(
-        decoded.instituteId
-      ).select("-password");
+      const institute = await InstituteAuth.findById(decoded.id).select(
+        "-password"
+      );
 
       if (!institute) {
         console.log("No institute found for ID");
