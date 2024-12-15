@@ -26,10 +26,10 @@ router.get("/profile", protectAccess, profileInstitute);
 router.post("/logout", logoutInstitute);
 
 //Course and course will link with GQ & MQ
-router.post("/add-courses", addCourses);
-router.get("/get-courses", getCourses);
-router.put("/update-course/:courseId", updateCourse);
-router.delete("/delete-course/:courseId", deleteCourse);
+router.post("/add-courses", protectAccess, addCourses);
+router.get("/get-courses", protectAccess, getCourses);
+router.put("/update-course/:courseId", protectAccess, updateCourse);
+router.delete("/delete-course/:courseId", protectAccess, deleteCourse);
 //Order API - payment
 router.post("/calc-requirements", calculateRequirement);
 router.post("/completePayment", completePayment);
@@ -38,4 +38,3 @@ router.get("/getAll-nanoID", getgeneratedNanoID);
 
 export default router;
 // http://localhost:8080/api/institute/account/register
-//protectAccess middleware is remove from routes to test
