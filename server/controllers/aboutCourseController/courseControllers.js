@@ -5,19 +5,17 @@ import CourseInfo from "../../models/courseModel.js";
 //add courses into institute
 const addCourses = asyncHandler(async (req, res) => {
   const { courseName } = req.body;
-  // Get institute ID from authenticated request
-  // This assumes the protectAccess middleware has already set req.institute
-  const instituteId = req.institute._id;
 
-  const institute = await InstituteAuth.findById(instituteId);
+  const id = req.institute?.id;
+  const institute = await InstituteAuth.findById(id);
   if (!institute) {
     res.status(404);
     throw new Error("Institute not found");
   }
-  // Check for duplicate course name within the same institute
+
   const existingCourse = await CourseInfo.findOne({
     courseName: { $regex: new RegExp(`^${courseName}$`, "i") },
-    institute: instituteId,
+    institute: id,
   });
 
   if (existingCourse) {
@@ -26,13 +24,19 @@ const addCourses = asyncHandler(async (req, res) => {
   }
   const newCourse = new CourseInfo({
     courseName,
-    institute: instituteId,
+    institute: id,
   });
   const savedCourse = await newCourse.save();
   res.status(201).json({
     message: "Course added Successfully",
     courseName: savedCourse,
   });
+  if (!savedCourse) {
+    res.status(500).json({
+      message: "Internal server error",
+      error: error instanceof Error ? error.message : "Check the backend error",
+    });
+  }
 });
 
 const getCourses = asyncHandler(async (req, res) => {
