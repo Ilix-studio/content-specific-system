@@ -36,7 +36,7 @@ const checkout = asyncHandler(async (req, res) => {
 });
 
 // verify , save to db
-const verify = asyncHandler(async (res, res) => {
+const verifyPayment = asyncHandler(async (res, res) => {
   const {
     orderId,
     paymentId,
@@ -67,4 +67,4 @@ const instituteOrderByCourse = asyncHandler(async (res, res) => {});
 // Fetch all order by courseName
 const showAllOrders = asyncHandler(async (res, res) => {});
 
-export { checkout, verify, instituteOrderByCourse, showAllOrders };
+export { checkout, verifyPayment, instituteOrderByCourse, showAllOrders };
