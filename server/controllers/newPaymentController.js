@@ -36,7 +36,7 @@ const checkout = asyncHandler(async (req, res) => {
 });
 
 // verify , save to db
-const verifyPayment = asyncHandler(async (res, res) => {
+const verifyPayment = asyncHandler(async (req, res) => {
   const {
     orderId,
     paymentId,
