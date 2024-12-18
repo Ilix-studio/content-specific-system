@@ -5,9 +5,10 @@ import {
   instituteOrderByCourse,
   showAllOrders,
 } from "../controllers/newPaymentController.js";
-const router = express.Router();
+import { protectAccess } from "../middleware/authMiddleware.js";
 
-router.post("/checkout", checkout);
-router.post("/verify-payment", verifyPayment);
+const router = express.Router();
+router.post("/checkout", protectAccess, checkout);
+router.post("/verify-payment", protectAccess, verifyPayment);
 
 export default router;

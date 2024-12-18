@@ -1,8 +1,9 @@
 import asyncHandler from "express-async-handler";
 import Razorpay from "razorpay";
 import dotenv from "dotenv";
-dotenv.config();
 import NewPaymentInfo from "../models/newPaymentmodel.js";
+
+dotenv.config();
 
 const razorpayInstance = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -14,11 +15,12 @@ const checkout = asyncHandler(async (req, res) => {
     selectedCourse,
     selectedTimePeriod,
     passkeyCount,
-    totalPrice,
+    amount,
     instituteId,
   } = req.body;
+
   var options = {
-    amount: totalPrice * 100, // amount in the smallest currency unit
+    amount: amount * 100, // amount in the smallest currency unit
     currency: "INR",
     receipt: `receipt_${Date.now()}`,
   };
@@ -58,7 +60,12 @@ const verifyPayment = asyncHandler(async (req, res) => {
     selectedTimePeriod,
     payStatus: "paid",
   });
-  res.json({ message: "payment successfull..", success: true, orderConfirm });
+  res.json({
+    message: "payment successfull..",
+    success: true,
+    orderConfirm,
+    amount,
+  });
 });
 
 // institute order passkey according to courseName
