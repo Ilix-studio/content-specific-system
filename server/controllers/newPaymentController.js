@@ -62,9 +62,9 @@ const verifyPayment = asyncHandler(async (req, res) => {
 });
 
 // institute order passkey according to courseName
-const instituteOrderByCourse = asyncHandler(async (res, res) => {});
+const instituteOrderByCourse = asyncHandler(async (req, res) => {});
 
 // Fetch all order by courseName
-const showAllOrders = asyncHandler(async (res, res) => {});
+const showAllOrders = asyncHandler(async (req, res) => {});
 
 export { checkout, verifyPayment, instituteOrderByCourse, showAllOrders };
