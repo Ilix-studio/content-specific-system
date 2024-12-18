@@ -1,13 +1,13 @@
 import express from "express";
 import {
   checkout,
-  verify,
+  verifyPayment,
   instituteOrderByCourse,
   showAllOrders,
 } from "../controllers/newPaymentController.js";
 const router = express.Router();
 
 router.post("/checkout", checkout);
-router.post("/verify-payment", verify);
+router.post("/verify-payment", verifyPayment);
 
 export default router;
