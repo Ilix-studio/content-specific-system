@@ -1,0 +1,72 @@
+Date : 2024-12-19 18:20:52
+Directory : /Users/ilish_acc/Developer/Course90_instituteAPI/server
+Total : 32 files,  1021 codes, 69 comments, 166 blanks, all 1256 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JavaScript |         32 |      1,021 |         69 |        166 |      1,256 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                             | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                |         32 |      1,021 |         69 |        166 |      1,256 |
+| . (Files)                                                                                                        |          1 |         27 |          1 |          8 |         36 |
+| config                                                                                                           |          2 |         29 |          0 |          4 |         33 |
+| controllers                                                                                                      |         10 |        509 |         45 |         83 |        637 |
+| controllers (Files)                                                                                              |          4 |        207 |         18 |         32 |        257 |
+| controllers/OrderApi                                                                                             |          1 |         13 |          2 |          5 |         20 |
+| controllers/aboutCourseController                                                                                |          1 |        116 |         19 |         28 |        163 |
+| controllers/mcqControllers                                                                                       |          2 |        127 |          3 |         11 |        141 |
+| controllers/nanoIdController                                                                                     |          2 |         46 |          3 |          7 |         56 |
+| middleware                                                                                                       |          4 |         64 |          6 |         17 |         87 |
+| models                                                                                                           |          8 |        274 |          6 |         26 |        306 |
+| models (Files)                                                                                                   |          6 |        178 |          5 |         17 |        200 |
+| models/mcqModels                                                                                                 |          2 |         96 |          1 |          9 |        106 |
+| routes                                                                                                           |          5 |         87 |         10 |         21 |        118 |
+| routes (Files)                                                                                                   |          3 |         47 |          7 |         12 |         66 |
+| routes/mcqRoutes                                                                                                 |          2 |         40 |          3 |          9 |         52 |
+| utils                                                                                                            |          2 |         31 |          1 |          7 |         39 |
++------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                                         | language   | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/config/allowOrigins.js                                   | JavaScript |         16 |          0 |          1 |         17 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/config/corsOptions.js                                    | JavaScript |         13 |          0 |          3 |         16 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/controllers/OrderApi/completePayment.js                  | JavaScript |         13 |          2 |          5 |         20 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/controllers/aboutCourseController/courseControllers.js   | JavaScript |        116 |         19 |         28 |        163 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/controllers/calcRequirementsController.js                | JavaScript |         24 |          4 |          3 |         31 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/controllers/instituteAuthController.js                   | JavaScript |        107 |          9 |         15 |        131 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/controllers/mcqControllers/generalQuestionController.js  | JavaScript |         63 |          1 |          6 |         70 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/controllers/mcqControllers/mockQuestionController.js     | JavaScript |         64 |          2 |          5 |         71 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/controllers/nanoIdController/generatedNanoIDContoller.js | JavaScript |         39 |          3 |          4 |         46 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/controllers/nanoIdController/getAllnanoIDs.js            | JavaScript |          7 |          0 |          3 |         10 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/controllers/newPaymentController.js                      | JavaScript |         61 |          3 |         10 |         74 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/controllers/studentAuthController.js                     | JavaScript |         15 |          2 |          4 |         21 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/index.js                                                 | JavaScript |         27 |          1 |          8 |         36 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/middleware/authMiddleware.js                             | JavaScript |         45 |          6 |         12 |         63 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/middleware/errorMiddleware.js                            | JavaScript |         18 |          0 |          3 |         21 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/middleware/logger.js                                     | JavaScript |          0 |          0 |          1 |          1 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/middleware/loginLimiter.js                               | JavaScript |          1 |          0 |          1 |          2 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/models/courseModel.js                                    | JavaScript |         14 |          0 |          3 |         17 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/models/instituteAuthModel.js                             | JavaScript |         29 |          0 |          2 |         31 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/models/mcqModels/generalQModel.js                        | JavaScript |         45 |          1 |          5 |         51 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/models/mcqModels/mockQModel.js                           | JavaScript |         51 |          0 |          4 |         55 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/models/nanoIdModel.js                                    | JavaScript |         43 |          0 |          3 |         46 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/models/newPaymentmodel.js                                | JavaScript |         53 |          0 |          3 |         56 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/models/paymentModel.js                                   | JavaScript |         31 |          5 |          3 |         39 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/models/studentModel.js                                   | JavaScript |          8 |          0 |          3 |         11 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/routes/instituteAuthRoutes.js                            | JavaScript |         26 |          7 |          5 |         38 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/routes/mcqRoutes/generalQRoutes.js                       | JavaScript |         20 |          2 |          5 |         27 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/routes/mcqRoutes/mockQRoutes.js                          | JavaScript |         20 |          1 |          4 |         25 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/routes/newPaymentRoutes.js                               | JavaScript |         16 |          0 |          4 |         20 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/routes/studentAuthRoutes.js                              | JavaScript |          5 |          0 |          3 |          8 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/utils/dbConnection.js                                    | JavaScript |         14 |          0 |          4 |         18 |
+| /Users/ilish_acc/Developer/Course90_instituteAPI/server/utils/priceCalc.js                                       | JavaScript |         17 |          1 |          3 |         21 |
+| Total                                                                                                            |            |      1,021 |         69 |        166 |      1,256 |
++------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

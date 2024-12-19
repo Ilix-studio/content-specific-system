@@ -8,16 +8,13 @@ dotenv.config();
 const razorpayInstance = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET,
+  headers: {
+    "X-Razorpay-Account": process.env.merchant_account_id,
+  },
 });
 
 const checkout = asyncHandler(async (req, res) => {
-  const {
-    selectedCourse,
-    selectedTimePeriod,
-    passkeyCount,
-    amount,
-    instituteId,
-  } = req.body;
+  const { selectedCourse, selectedTimePeriod, passkeyCount, amount } = req.body;
 
   var options = {
     amount: amount * 100, // amount in the smallest currency unit
@@ -32,7 +29,6 @@ const checkout = asyncHandler(async (req, res) => {
     selectedCourse,
     selectedTimePeriod,
     passkeyCount,
-    instituteId,
     payStatus: "created",
   });
 });

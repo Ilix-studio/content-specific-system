@@ -6,9 +6,16 @@ import {
   showAllOrders,
 } from "../controllers/newPaymentController.js";
 import { protectAccess } from "../middleware/authMiddleware.js";
+import { generateNanoID } from "../controllers/nanoIdController/generatedNanoIDContoller.js";
+import { getGeneratedNanoID } from "../controllers/nanoIdController/getAllnanoIDs.js";
 
 const router = express.Router();
 router.post("/checkout", protectAccess, checkout);
 router.post("/verify-payment", protectAccess, verifyPayment);
 
+router.post("/generate-nanoID", protectAccess, generateNanoID);
+router.get("/getAll-nanoID", protectAccess, getGeneratedNanoID);
+
 export default router;
+
+// /api/payment/generate-nanoID
