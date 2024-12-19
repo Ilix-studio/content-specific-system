@@ -27,7 +27,7 @@ const newPaymentSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    nanoIdCount: {
+    passkeyCount: {
       type: Number,
       required: true,
     },
