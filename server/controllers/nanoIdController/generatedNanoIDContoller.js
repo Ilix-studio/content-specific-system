@@ -1,16 +1,23 @@
 import asyncHandler from "express-async-handler";
-import PaymentInfo from "../../models/paymentModel.js";
 import { nanoid } from "nanoid";
 import NanoIDInfo from "../../models/nanoIdModel.js";
+import NewPaymentInfo from "../../models/newPaymentmodel.js";
 
 // Genrate token for institute by batch(students) by course
 const generateNanoID = asyncHandler(async (req, res) => {
-  const { paymentId } = req.body;
+  const { razorpay_payment_id } = req.body;
+  const instituteId = req.institute._id;
   // Find payment by ID
-  const payment = await PaymentInfo.findById(paymentId);
+  const payment = await NewPaymentInfo.findById(razorpay_payment_id);
   if (!payment) {
     res.status(404);
     throw new Error("Payment not found");
+  }
+
+  // Verify payment belongs to institute
+  if (payment.instituteId.toString() !== instituteId.toString()) {
+    res.status(403);
+    throw new Error("Not authorized to access this payment");
   }
   if (payment.status === "completed") {
     const nanoIds = [];
@@ -20,13 +27,18 @@ const generateNanoID = asyncHandler(async (req, res) => {
     const saveTheNanoIds = new NanoIDInfo({
       nanoID: nanoIds,
       isActive: true,
+      instituteId: instituteId,
+      courseName: payment.courseName,
+      timePeriod: payment.timePeriod,
     });
     await saveTheNanoIds.save();
     res.status(201).json({
-      nanoIds: nanoIds,
+      success: true,
+      passkeys: nanoIds,
     });
   } else {
-    res.status(400).json({ msg: "Payment not completed" });
+    res.status(400);
+    throw new Error("Payment not completed");
   }
 });
 

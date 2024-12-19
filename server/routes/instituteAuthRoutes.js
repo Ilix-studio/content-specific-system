@@ -13,10 +13,9 @@ import {
   updateCourse,
   deleteCourse,
 } from "../controllers/aboutCourseController/courseControllers.js";
-import { generateNanoID } from "../controllers/nanoIdController/generatedNanoIDContoller.js";
-import { getgeneratedNanoID } from "../controllers/nanoIdController/getAllnanoIDs.js";
-import { calculateRequirement } from "../controllers/calcRequirementsController.js";
-import { completePayment } from "../controllers/OrderApi/completePayment.js";
+
+// import { calculateRequirement } from "../controllers/calcRequirementsController.js";
+// import { completePayment } from "../controllers/OrderApi/completePayment.js";
 import { protectAccess } from "../middleware/authMiddleware.js";
 
 router.post("/register", registerInstitute);
@@ -31,10 +30,8 @@ router.get("/get-courses", protectAccess, getCourses);
 router.put("/update-course/:courseId", protectAccess, updateCourse);
 router.delete("/delete-course/:courseId", protectAccess, deleteCourse);
 //Order API - payment
-router.post("/calc-requirements", calculateRequirement);
-router.post("/completePayment", completePayment);
-router.post("/generate-nanoID", generateNanoID);
-router.get("/getAll-nanoID", getgeneratedNanoID);
+// router.post("/calc-requirements", calculateRequirement);
+// router.post("/completePayment", completePayment);
 
 export default router;
 // http://localhost:8080/api/institute/account/register
