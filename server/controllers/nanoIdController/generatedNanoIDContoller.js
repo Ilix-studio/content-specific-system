@@ -5,10 +5,10 @@ import NewPaymentInfo from "../../models/newPaymentmodel.js";
 
 // Genrate token for institute by batch(students) by course
 const generateNanoID = asyncHandler(async (req, res) => {
-  const { razorpay_payment_id } = req.body;
+  const { orderId } = req.body;
   const instituteId = req.institute._id;
   // Find payment by ID
-  const payment = await NewPaymentInfo.findById(razorpay_payment_id);
+  const payment = await NewPaymentInfo.findById(orderId);
   if (!payment) {
     res.status(404);
     throw new Error("Payment not found");

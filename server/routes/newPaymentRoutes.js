@@ -13,7 +13,7 @@ const router = express.Router();
 router.post("/checkout", protectAccess, checkout);
 router.post("/verify-payment", protectAccess, verifyPayment);
 
-router.post("/generate-nanoID", protectAccess, generateNanoID);
+router.post("/generate-nanoID/:orderId", protectAccess, generateNanoID);
 router.get("/getAll-nanoID", protectAccess, getGeneratedNanoID);
 
 export default router;
