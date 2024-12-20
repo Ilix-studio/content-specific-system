@@ -4,9 +4,9 @@ import dotenv from "dotenv";
 import connectDB from "./utils/dbConnection.js";
 import generalQRoutes from "./routes/mcqRoutes/generalQRoutes.js";
 import mockQRoutes from "./routes/mcqRoutes/mockQRoutes.js";
-import instituteAuthRoutes from "./routes/instituteAuthRoutes.js";
-import newPaymentRoutes from "./routes/newPaymentRoutes.js";
-import studentAuthRoutes from "./routes/studentAuthRoutes.js";
+import instituteAuthRoutes from "./routes/authR/instituteAuthRoutes.js";
+import newPaymentRoutes from "./routes/payment/newPaymentRoutes.js";
+import studentAuthRoutes from "./routes/authR/studentAuthRoutes.js";
 
 import { routeNotFound, errorHandler } from "./middleware/errorMiddleware.js";
 import corsOptions from "./config/corsOptions.js";

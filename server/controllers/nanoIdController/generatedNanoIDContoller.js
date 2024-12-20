@@ -1,25 +1,21 @@
 import asyncHandler from "express-async-handler";
 import { nanoid } from "nanoid";
-import NanoIDInfo from "../../models/nanoIdModel.js";
-import NewPaymentInfo from "../../models/newPaymentmodel.js";
+import NanoIDInfo from "../../models/transaction/nanoIdModel.js";
+import NewPaymentInfo from "../../models/transaction/newPaymentmodel.js";
 
 // Genrate token for institute by batch(students) by course
 const generateNanoID = asyncHandler(async (req, res) => {
-  const { orderId } = req.body;
+  const { orderId } = req.params;
   const instituteId = req.institute._id;
   // Find payment by ID
   const payment = await NewPaymentInfo.findById(orderId);
+  console.log(payment);
   if (!payment) {
     res.status(404);
     throw new Error("Payment not found");
   }
 
-  // Verify payment belongs to institute
-  if (payment.instituteId.toString() !== instituteId.toString()) {
-    res.status(403);
-    throw new Error("Not authorized to access this payment");
-  }
-  if (payment.status === "completed") {
+  if (payment.payStatus === "paid") {
     const nanoIds = [];
     for (let i = 0; i < payment.nanoIdCount; i++) {
       nanoIds.push(nanoid(13)); // Generate a new Nano ID

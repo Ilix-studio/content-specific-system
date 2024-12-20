@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
-import InstituteAuth from "../../models/instituteAuthModel.js";
-import CourseInfo from "../../models/courseModel.js";
+import InstituteAuth from "../../models/auth/instituteAuthModel.js";
+import CourseInfo from "../../models/transaction/courseModel.js";
 
 //add courses into institute
 const addCourses = asyncHandler(async (req, res) => {
