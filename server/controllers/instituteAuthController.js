@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import InstituteAuth from "../models/instituteAuthModel.js";
+import InstituteAuth from "../models/auth/instituteAuthModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 

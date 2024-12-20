@@ -4,10 +4,10 @@ import {
   verifyPayment,
   instituteOrderByCourse,
   showAllOrders,
-} from "../controllers/newPaymentController.js";
-import { protectAccess } from "../middleware/authMiddleware.js";
-import { generateNanoID } from "../controllers/nanoIdController/generatedNanoIDContoller.js";
-import { getGeneratedNanoID } from "../controllers/nanoIdController/getAllnanoIDs.js";
+} from "../../controllers/newPaymentController.js";
+import { protectAccess } from "../../middleware/authMiddleware.js";
+import { generateNanoID } from "../../controllers/nanoIdController/generatedNanoIDContoller.js";
+import { getGeneratedNanoID } from "../../controllers/nanoIdController/getAllnanoIDs.js";
 
 const router = express.Router();
 router.post("/checkout", protectAccess, checkout);

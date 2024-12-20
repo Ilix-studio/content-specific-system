@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
-import InstituteAuth from "../models/instituteAuthModel.js";
+import InstituteAuth from "../models/auth/instituteAuthModel.js";
 
 const protectAccess = asyncHandler(async (req, res, next) => {
   let token;

@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
 import Razorpay from "razorpay";
 import dotenv from "dotenv";
-import NewPaymentInfo from "../models/newPaymentmodel.js";
+import NewPaymentInfo from "../models/transaction/newPaymentmodel.js";
 
 dotenv.config();
 

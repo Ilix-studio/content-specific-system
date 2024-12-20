@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import NanoIDInfo from "../models/nanoIdModel.js";
+import NanoIDInfo from "../models/transaction/nanoIdModel.js";
 
 const loginStudent = asyncHandler(async (req, res) => {
   const { nanoID } = req.body;
