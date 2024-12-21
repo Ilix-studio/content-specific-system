@@ -17,7 +17,7 @@ const generateNanoID = asyncHandler(async (req, res) => {
 
   if (payment.payStatus === "paid") {
     const nanoIds = [];
-    for (let i = 0; i < payment.nanoIdCount; i++) {
+    for (let i = 0; i < payment.passkeyCount; i++) {
       nanoIds.push(nanoid(13)); // Generate a new Nano ID
     }
     const saveTheNanoIds = new NanoIDInfo({

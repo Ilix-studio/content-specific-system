@@ -14,14 +14,6 @@ const nanoIDSchema = mongoose.Schema(
       ref: "Institute",
       required: true,
     },
-    courseName: {
-      type: String,
-      required: true,
-    },
-    timePeriod: {
-      type: String,
-      required: true,
-    },
     isActive: {
       type: Boolean,
       default: true,
