@@ -9,14 +9,31 @@ const nanoIDSchema = mongoose.Schema(
         unique: true,
       },
     ],
-    instituteId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Institute",
+    courseName: {
+      type: String,
       required: true,
     },
-    isActive: {
-      type: Boolean,
-      default: true,
+    timePeriod: {
+      type: String,
+      required: true,
+    },
+
+    status: {
+      type: String,
+      enum: ["ACTIVE", "EXPIRED", "REVOKED"],
+      default: "ACTIVE",
+    },
+    generatedAt: {
+      type: Date,
+      required: true,
+    },
+    activatedAt: {
+      type: Date,
+      required: true,
+    },
+    expiresAt: {
+      type: Date,
+      required: true,
     },
     isUsed: {
       type: Boolean,
@@ -26,6 +43,16 @@ const nanoIDSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Student",
       default: null,
+    },
+    payment: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "NewPaymentInfo",
+      required: true,
+    },
+    instituteId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Institute",
+      required: true,
     },
   },
   {
