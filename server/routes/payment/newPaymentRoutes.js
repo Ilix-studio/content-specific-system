@@ -2,20 +2,18 @@ import express from "express";
 import {
   checkout,
   verifyPayment,
-  instituteOrderByCourse,
-  showAllOrders,
+  saveThePasskey,
+  showThePaidPasskey,
 } from "../../controllers/newPaymentController.js";
 import { protectAccess } from "../../middleware/authMiddleware.js";
-import { generateNanoID } from "../../controllers/nanoIdController/generatedNanoIDContoller.js";
-import { getGeneratedNanoID } from "../../controllers/nanoIdController/getAllnanoIDs.js";
 
 const router = express.Router();
 router.post("/checkout", protectAccess, checkout);
 router.post("/verify-payment", protectAccess, verifyPayment);
 
-router.post("/generate-nanoID/:orderId", protectAccess, generateNanoID);
-router.get("/getAll-nanoID", protectAccess, getGeneratedNanoID);
+router.post("/save-passkey", protectAccess, saveThePasskey);
+router.get("/show-passkeys", protectAccess, showThePaidPasskey);
 
 export default router;
 
-// /api/payment/generate-nanoID
+// http://localhost:8080/api/payment/save-passkey

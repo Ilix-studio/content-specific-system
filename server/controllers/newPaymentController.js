@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import Razorpay from "razorpay";
 import dotenv from "dotenv";
 import NewPaymentInfo from "../models/transaction/newPaymentmodel.js";
+import NanoIDModel from "../models/transaction/nanoIdModel.js";
 
 dotenv.config();
 
@@ -14,7 +15,7 @@ const razorpayInstance = new Razorpay({
 });
 
 const checkout = asyncHandler(async (req, res) => {
-  const { selectedCourse, selectedTimePeriod, passkeyCount, amount } = req.body;
+  const { courseName, timePeriod, passkeyCount, amount } = req.body;
 
   var options = {
     amount: amount * 100, // amount in the smallest currency unit
@@ -26,11 +27,12 @@ const checkout = asyncHandler(async (req, res) => {
   res.json({
     orderId: order.id,
     amount: amount,
-    selectedCourse,
-    selectedTimePeriod,
+    courseName,
+    timePeriod,
     passkeyCount,
     payStatus: "created",
   });
+  console.log(order, amount, courseName, timePeriod, passkeyCount, payStatus);
 });
 
 // verify , save to db
@@ -63,11 +65,10 @@ const verifyPayment = asyncHandler(async (req, res) => {
     amount,
   });
 });
-
 // institute order passkey according to courseName
-const instituteOrderByCourse = asyncHandler(async (req, res) => {});
+const saveThePasskey = asyncHandler(async (req, res) => {});
 
-// Fetch all order by courseName
-const showAllOrders = asyncHandler(async (req, res) => {});
+// to get all the pais passkey or nanoId into frontend
+const showThePaidPasskey = asyncHandler(async (req, res) => {});
 
-export { checkout, verifyPayment, instituteOrderByCourse, showAllOrders };
+export { checkout, verifyPayment, saveThePasskey, showThePaidPasskey };

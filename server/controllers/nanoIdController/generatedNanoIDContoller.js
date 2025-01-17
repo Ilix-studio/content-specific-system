@@ -5,33 +5,18 @@ import NewPaymentInfo from "../../models/transaction/newPaymentmodel.js";
 
 // Genrate token for institute by batch(students) by course
 const generateNanoID = asyncHandler(async (req, res) => {
-  const { orderId } = req.params;
-  const instituteId = req.institute._id;
+  const { razorpay_payment_id } = req.params;
+  // const instituteId = req.institute._id;
   // Find payment by ID
-  const payment = await NewPaymentInfo.findById(orderId);
+  const passkeyInfo = await NewPaymentInfo.findById(razorpay_payment_id);
   console.log(payment);
-  if (!payment) {
+  if (!passkeyInfo) {
     res.status(404);
-    throw new Error("Payment not found");
+    throw new Error("Failed to fetch passkey information");
   }
 
   if (payment.payStatus === "paid") {
-    const nanoIds = [];
-    for (let i = 0; i < payment.passkeyCount; i++) {
-      nanoIds.push(nanoid(13)); // Generate a new Nano ID
-    }
-    const saveTheNanoIds = new NanoIDInfo({
-      nanoID: nanoIds,
-      isActive: true,
-      instituteId: instituteId,
-      courseName: payment.courseName,
-      timePeriod: payment.timePeriod,
-    });
-    await saveTheNanoIds.save();
-    res.status(201).json({
-      success: true,
-      passkeys: nanoIds,
-    });
+    res.status(200).json({ success: true, data: passkeyInfo });
   } else {
     res.status(400);
     throw new Error("Payment not completed");
@@ -39,3 +24,26 @@ const generateNanoID = asyncHandler(async (req, res) => {
 });
 
 export { generateNanoID };
+
+// if (payment.payStatus === "paid") {
+//   const nanoIds = [];
+//   for (let i = 0; i < payment.passkeyCount; i++) {
+//     nanoIds.push(nanoid(13)); // Generate a new Nano ID
+//   }
+//   const saveTheNanoIds = new NanoIDInfo({
+//     nanoID: nanoIds,
+//     isActive: true,
+//     instituteId: instituteId,
+//     courseName: payment.courseName,
+//     timePeriod: payment.timePeriod,
+//   });
+//   await saveTheNanoIds.save();
+//   res.status(201).json({
+//     success: true,
+//     passkeys: nanoIds,
+//   });
+// } else {
+//   res.status(400);
+//   throw new Error("Payment not completed");
+// }
+// });
