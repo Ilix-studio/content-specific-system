@@ -17,3 +17,4 @@ router.get("/show-passkeys", protectAccess, showThePaidPasskey);
 export default router;
 
 // http://localhost:8080/api/payment/save-passkey
+// http://localhost:8080/api/payment/show-passkeys

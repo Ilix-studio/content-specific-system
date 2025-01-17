@@ -14,6 +14,9 @@ const razorpayInstance = new Razorpay({
   },
 });
 
+// @desc    Create checkout order
+// @route   POST /api/payment/checkout
+// @access  Private
 const checkout = asyncHandler(async (req, res) => {
   const { courseName, timePeriod, passkeyCount, amount } = req.body;
 
@@ -32,10 +35,11 @@ const checkout = asyncHandler(async (req, res) => {
     passkeyCount,
     payStatus: "created",
   });
-  console.log(order, amount, courseName, timePeriod, passkeyCount, payStatus);
 });
 
-// verify , save to db
+// @desc    Verify payment and save passkeys
+// @route   POST /api/payment/verify
+// @access  Private
 const verifyPayment = asyncHandler(async (req, res) => {
   const {
     orderId,
@@ -66,9 +70,95 @@ const verifyPayment = asyncHandler(async (req, res) => {
   });
 });
 // institute order passkey according to courseName
-const saveThePasskey = asyncHandler(async (req, res) => {});
+const saveThePasskey = asyncHandler(async (req, res) => {
+  const { passkeys, paymentInfo } = req.body;
+  const instituteId = req.institute._id;
+
+  // First save payment information
+  const newPayment = new NewPaymentInfo({
+    ...paymentInfo,
+    instituteId,
+    payStatus: "SUCCESS",
+  });
+  const savedPayment = await newPayment.save();
+
+  // Calculate dates
+  const generatedAt = new Date();
+  const activatedAt = new Date();
+  const timePeriod = parseInt(passkeys[0].timePeriod);
+  const expiresAt = new Date(
+    activatedAt.setMonth(activatedAt.getMonth() + timePeriod)
+  );
+
+  // Save passkeys
+  const passkeyDocs = passkeys.map((passkey) => ({
+    nanoID: [passkey.id],
+    courseName: passkey.courseName,
+    timePeriod: passkey.timePeriod,
+    generatedAt,
+    activatedAt,
+    expiresAt,
+    isUsed: false,
+    usedBy: null,
+    payment: savedPayment._id,
+    instituteId,
+  }));
+
+  const savedPasskeys = await NanoIDModel.insertMany(passkeyDocs);
+  res.status(201).json({
+    success: true,
+    passkeys: savedPasskeys,
+    payment: savedPayment,
+  });
+  if (!savedPasskeys) {
+    res.status(500).json({
+      message: "Check saveThePasskey controller",
+      error: error instanceof Error ? error.message : "Check the backend error",
+    });
+  }
+});
 
 // to get all the pais passkey or nanoId into frontend
-const showThePaidPasskey = asyncHandler(async (req, res) => {});
+const showThePaidPasskey = asyncHandler(async (req, res, next) => {
+  const instituteId = req.institute._id;
+  const passkeys = await NanoIDModel.find({ instituteId })
+    .populate(
+      "payment",
+      "razorpay_order_id razorpay_payment_id amount orderDate payStatus"
+    )
+    .populate("usedBy", "name email")
+    .sort({ createdAt: -1 });
+  // Group passkeys by payment
+  const groupedPasskeys = passkeys.reduce((acc, passkey) => {
+    const paymentId = passkey.payment?._id?.toString();
+    if (!acc[paymentId]) {
+      acc[paymentId] = {
+        payment: passkey.payment,
+        passkeys: [],
+      };
+    }
+    acc[paymentId].passkeys.push(passkey);
+    return acc;
+  }, {});
+  // Add statistics
+  const stats = {
+    totalPasskeys: passkeys.length,
+    activePasskeys: passkeys.filter((p) => p.status === "ACTIVE").length,
+    usedPasskeys: passkeys.filter((p) => p.isUsed).length,
+    expiredPasskeys: passkeys.filter((p) => p.status === "EXPIRED").length,
+  };
+
+  res.status(200).json({
+    success: true,
+    data: Object.values(groupedPasskeys),
+    stats,
+  });
+  if (!groupedPasskeys) {
+    res.status(500).json({
+      message: "Check showThePaidPasskey controller",
+      error: error instanceof Error ? error.message : "Check the backend error",
+    });
+  }
+});
 
 export { checkout, verifyPayment, saveThePasskey, showThePaidPasskey };
